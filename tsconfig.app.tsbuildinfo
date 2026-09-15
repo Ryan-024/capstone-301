@@ -1,1 +1,1 @@
-{"root":["./src/main.ts","./src/shims-vue.d.ts","./src/plugins/vuetify.ts","./src/app.vue"],"version":"5.6.3"}
+{"root":["./src/main.ts","./src/shims-vue.d.ts","./src/types.ts","./src/composables/theme.ts","./src/composables/usedataset.ts","./src/plugins/chart.ts","./src/plugins/vuetify.ts","./src/app.vue","./src/components/appheader.vue","./src/components/engagementchart.vue","./src/components/rangefilter.vue","./src/components/statcard.vue","./src/components/topcontent.vue","./src/components/viewerchart.vue"],"version":"5.6.3"}

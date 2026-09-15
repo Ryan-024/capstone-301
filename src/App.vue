@@ -1,26 +1,115 @@
 <script setup lang="ts">
+import { useDataset } from './composables/useDataset'
+import { formatCurrency, formatNumber } from './composables/theme'
+import AppHeader from './components/AppHeader.vue'
+import RangeFilter from './components/RangeFilter.vue'
+import StatCard from './components/StatCard.vue'
+import EngagementChart from './components/EngagementChart.vue'
+import ViewerChart from './components/ViewerChart.vue'
+import TopContent from './components/TopContent.vue'
+
+const {
+  selectedRange,
+  current,
+  previous,
+  engagementSeries,
+  viewerBreakdown,
+  topByEngagement,
+  topByRevenue
+} = useDataset()
 </script>
 
 <template>
   <v-app>
-    <v-app-bar color="surface" flat>
-      <v-app-bar-title>Content Analytics</v-app-bar-title>
-    </v-app-bar>
+    <AppHeader />
 
     <v-main>
-      <v-container>
+      <v-container class="py-6" fluid>
+        <!-- Filter row -->
+        <v-row align="center" class="mb-2">
+          <v-col cols="12" md="auto">
+            <div class="text-h5 font-weight-bold">Overview</div>
+            <div class="text-caption text-medium-emphasis">
+              Showing the last {{ selectedRange }} days
+            </div>
+          </v-col>
+          <v-spacer />
+          <v-col cols="12" md="auto">
+            <RangeFilter v-model="selectedRange" />
+          </v-col>
+        </v-row>
+
+        <!-- KPI cards -->
         <v-row>
-          <v-col cols="12">
-            <v-card>
-              <v-card-title>Vuetify 3 is ready</v-card-title>
-              <v-card-text>
-                Dark theme is enabled by default. Material Design Icons are loaded
-                (<v-icon icon="mdi-check-circle" color="success" />).
-              </v-card-text>
-            </v-card>
+          <v-col cols="12" md="4">
+            <StatCard
+              title="Overall Views"
+              icon="mdi-eye-outline"
+              :value="formatNumber(current.totalViews)"
+              :current="current.totalViews"
+              :previous="previous.totalViews"
+            />
+          </v-col>
+          <v-col cols="12" md="4">
+            <StatCard
+              title="Ad Revenue"
+              icon="mdi-currency-usd"
+              color="secondary"
+              :value="formatCurrency(current.adRevenue)"
+              :current="current.adRevenue"
+              :previous="previous.adRevenue"
+            />
+          </v-col>
+          <v-col cols="12" md="4">
+            <StatCard
+              title="Net Subscribers"
+              icon="mdi-account-plus-outline"
+              color="tertiary"
+              :value="formatNumber(current.netSubscribers)"
+              :current="current.netSubscribers"
+              :previous="previous.netSubscribers"
+            />
+          </v-col>
+        </v-row>
+
+        <!-- Charts -->
+        <v-row class="mt-2">
+          <v-col cols="12" md="7">
+            <EngagementChart :series="engagementSeries" />
+          </v-col>
+          <v-col cols="12" md="5">
+            <ViewerChart :breakdown="viewerBreakdown" />
+          </v-col>
+        </v-row>
+
+        <!-- Top content lists -->
+        <v-row class="mt-2">
+          <v-col cols="12" md="6">
+            <TopContent
+              title="Top 5 by Engagement"
+              icon="mdi-fire"
+              mode="engagement"
+              :items="topByEngagement"
+            />
+          </v-col>
+          <v-col cols="12" md="6">
+            <TopContent
+              title="Top 5 by Ad Revenue"
+              icon="mdi-cash-multiple"
+              mode="revenue"
+              :items="topByRevenue"
+            />
           </v-col>
         </v-row>
       </v-container>
     </v-main>
   </v-app>
 </template>
+
+<style>
+html,
+body,
+#app {
+  min-height: 100vh;
+}
+</style>
