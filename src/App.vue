@@ -2,7 +2,6 @@
 import { useDataset } from './composables/useDataset'
 import { formatCurrency, formatNumber } from './composables/theme'
 import AppHeader from './components/AppHeader.vue'
-import RangeFilter from './components/RangeFilter.vue'
 import StatCard from './components/StatCard.vue'
 import EngagementChart from './components/EngagementChart.vue'
 import ViewerChart from './components/ViewerChart.vue'
@@ -21,24 +20,10 @@ const {
 
 <template>
   <v-app>
-    <AppHeader />
+    <AppHeader v-model="selectedRange" />
 
     <v-main>
       <v-container class="py-6" fluid>
-        <!-- Filter row -->
-        <v-row align="center" class="mb-2">
-          <v-col cols="12" md="auto">
-            <div class="text-h5 font-weight-bold">Overview</div>
-            <div class="text-caption text-medium-emphasis">
-              Showing the last {{ selectedRange }} days
-            </div>
-          </v-col>
-          <v-spacer />
-          <v-col cols="12" md="auto">
-            <RangeFilter v-model="selectedRange" />
-          </v-col>
-        </v-row>
-
         <!-- KPI cards -->
         <v-row>
           <v-col cols="12" md="4">
